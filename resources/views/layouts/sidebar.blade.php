@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li class="menu-header">{{__("Menu")}}</li>
-            {{-- @if (auth()->user()->role_id == 1) --}}
+            @if (auth()->user()->role_id == 1)
             {{-- <li class="nav-item dropdown {{ $active == 'produksi' || $active == 'permintaan' ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-seedling"></i><span>Buah Naga</span></a>
                 <ul class="dropdown-menu">
@@ -65,22 +65,22 @@
                     <i class="far fa-comment"></i>
                     <span>{{__('Pesan')}}</span>
                 </a>
-            </li>
+            </li> --}}
             @elseif (auth()->user()->role_id == 2)
-            <li class="{{ $active == 'order' ? 'active' : '' }}">
+            {{-- <li class="{{ $active == 'kasir' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
                     <i class="far fa-tag"></i>
-                    <span>{{__('Stok Obat')}}</span>
+                    <span>{{__('Kasir')}}</span>
                 </a>
-            </li>
+            </li> --}}
             @elseif (auth()->user()->role_id == 3)
-            <li class="{{ $active == 'order' ? 'active' : '' }}">
+            {{-- <li class="{{ $active == 'order' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
                     <i class="far fa-tag"></i>
                     <span>{{__('Stok Obat')}}</span>
                 </a>
-            </li>
-            @endif --}}
+            </li> --}}
+            @endif
             {{-- <li class="nav-item dropdown {{ $active == 'produksi' || $active == 'permintaan' ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-seedling"></i><span>Buah Naga</span></a>
                 <ul class="dropdown-menu">
