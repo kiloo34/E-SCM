@@ -43,28 +43,22 @@
             </li>
             <li class="menu-header">{{__("Menu")}}</li>
             @if (auth()->user()->role_id == 1)
-            {{-- <li class="nav-item dropdown {{ $active == 'produksi' || $active == 'permintaan' ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-seedling"></i><span>Buah Naga</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ $active == 'produksi' ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('produksi.index') }}">{{__('Produksi')}}</a>
-                    </li>
-                    <li class="{{ $active == 'permintaan' ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('permintaan.index') }}">{{__('Permintaan')}}</a>
-                    </li>
-                </ul>
-            </li> --}}
             <li class="{{ $active == 'supply' ? 'active' : '' }}">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('supply.index') }}">
                     <i class="far fa-cubes"></i>
                     <span>{{__('Bahan Baku')}}</span>
                 </a>
             </li>
-            <li class="{{ $active == 'supply' ? 'active' : '' }}">
-                <a class="nav-link" href="#">
-                    <i class="far fa-book"></i>
-                    <span>{{__('Menu')}}</span>
-                </a>
+            <li class="nav-item dropdown {{ $active == 'kategori' || $active == 'menu' ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Menu</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ $active == 'kategor' ? 'active' : '' }}">
+                        <a class="nav-link" href="#">{{__('Kategori')}}</a>
+                    </li>
+                    <li class="{{ $active == 'menu' ? 'active' : '' }}">
+                        <a class="nav-link" href="#">{{__('Menu')}}</a>
+                    </li>
+                </ul>
             </li>
             <li class="menu-header">{{__("Pesan")}}</li>
             <li class="{{ $active == 'pesan' ? 'active' : '' }}">
@@ -82,7 +76,7 @@
             </li> --}}
             @elseif (auth()->user()->role_id == 3)
             <li class="{{ $active == 'stok' ? 'active' : '' }}">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('supplier.index') }}">
                     <i class="far fa-cubes"></i>
                     <span>{{__('Stok Barang')}}</span>
                 </a>

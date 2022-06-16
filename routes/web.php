@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Manager\DashboardController as managerDashboard;
+use App\Http\Controllers\Manager\SupplyController as managerSupply;
 
 use App\Http\Controllers\Kasir\DashboardController as kasirDashboard;
 
 use App\Http\Controllers\Supplier\DashboardController as supplierDashboard;
+use App\Http\Controllers\Supplier\SupplyController as supplierSupply;
 
 
 /*
@@ -32,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:manager']], function () {
         //Dashboard
         Route::get('manager/dashboard', [managerDashboard::class, 'index'])->name('manager.dashboard');
+        //Supply
+        Route::resource('supply', managerSupply::class);
+        Route::get('ajax/getSupply', [managerSupply::class, 'getSupply'])->name('manager.getSupply');
     });
 
     Route::group(['middleware' => ['role:kasir']], function () {
@@ -42,5 +47,8 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:supplier']], function () {
         // Dashboard
         Route::get('supplier/dashboard', [supplierDashboard::class, 'index'])->name('supplier.dashboard');
+        // Supply
+        Route::resource('supplier', supplierSupply::class);
+        Route::get('ajax/supplier/getSupply', [supplierSupply::class, 'getSupply'])->name('supplier.getSupply');
     });
 });

@@ -1,12 +1,12 @@
 <div class="section-header">
     <h1>
-        {{-- @if ($title == 'outgoing')
-        {{__('Obat Keluar')}}    
-        @elseif ($title == 'ingoing')
-        {{__('Obat Masuk')}}
-        @else --}}
+        @if ($title == 'supply')
+        {{__('Bahan Baku')}}    
+        {{-- @elseif ($title == 'ingoing')
+        {{__('Obat Masuk')}} --}}
+        @else
         {{ucfirst($title)}}
-        {{-- @endif --}}
+        @endif
     </h1>
     <div class="section-header-breadcrumb">
         <div class="breadcrumb-item">
