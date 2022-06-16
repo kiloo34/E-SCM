@@ -54,18 +54,25 @@
                     </li>
                 </ul>
             </li> --}}
-            {{-- <li class="{{ $active == 'order' ? 'active' : '' }}">
+            <li class="{{ $active == 'supply' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
-                    <i class="far fa-tag"></i>
+                    <i class="far fa-cubes"></i>
                     <span>{{__('Bahan Baku')}}</span>
                 </a>
             </li>
+            <li class="{{ $active == 'supply' ? 'active' : '' }}">
+                <a class="nav-link" href="#">
+                    <i class="far fa-book"></i>
+                    <span>{{__('Menu')}}</span>
+                </a>
+            </li>
+            <li class="menu-header">{{__("Pesan")}}</li>
             <li class="{{ $active == 'pesan' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
                     <i class="far fa-comment"></i>
                     <span>{{__('Pesan')}}</span>
                 </a>
-            </li> --}}
+            </li>
             @elseif (auth()->user()->role_id == 2)
             {{-- <li class="{{ $active == 'kasir' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
