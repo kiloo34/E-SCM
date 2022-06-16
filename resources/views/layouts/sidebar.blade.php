@@ -81,12 +81,19 @@
                 </a>
             </li> --}}
             @elseif (auth()->user()->role_id == 3)
-            {{-- <li class="{{ $active == 'order' ? 'active' : '' }}">
+            <li class="{{ $active == 'stok' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
-                    <i class="far fa-tag"></i>
-                    <span>{{__('Stok Obat')}}</span>
+                    <i class="far fa-cubes"></i>
+                    <span>{{__('Stok Barang')}}</span>
                 </a>
-            </li> --}}
+            </li>
+            <li class="menu-header">{{__("Pesan")}}</li>
+            <li class="{{ $active == 'pesan' ? 'active' : '' }}">
+                <a class="nav-link" href="#">
+                    <i class="far fa-comment"></i>
+                    <span>{{__('Pesan')}}</span>
+                </a>
+            </li>
             @endif
             {{-- <li class="nav-item dropdown {{ $active == 'produksi' || $active == 'permintaan' ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-seedling"></i><span>Buah Naga</span></a>
