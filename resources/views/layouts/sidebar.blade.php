@@ -52,8 +52,8 @@
             <li class="nav-item dropdown {{ $active == 'kategori' || $active == 'menu' ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Menu</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ $active == 'kategor' ? 'active' : '' }}">
-                        <a class="nav-link" href="#">{{__('Kategori')}}</a>
+                    <li class="{{ $active == 'kategori' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('kategori.index') }}">{{__('Kategori Menu')}}</a>
                     </li>
                     <li class="{{ $active == 'menu' ? 'active' : '' }}">
                         <a class="nav-link" href="#">{{__('Menu')}}</a>
