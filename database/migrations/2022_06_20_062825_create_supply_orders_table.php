@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateSupplyOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('supply_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('total')->default(0);
+            $table->unsignedBigInteger('status');
+            $table->foreign('status')->references('id')->on('status_supply_orders')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('supply_orders');
     }
 }

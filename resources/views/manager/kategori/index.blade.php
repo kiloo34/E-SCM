@@ -42,6 +42,9 @@
                 },
             ],
         });
+        $('#kategori-table').on('draw.dt', function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
     });
 
     // $('.hapus-obat').on('click', function (e) {

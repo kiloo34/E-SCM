@@ -30,11 +30,7 @@ class SupplyController extends Controller
      */
     public function create()
     {
-        return view('manager.supply.create', [
-            'title' => 'supply',
-            'subtitle' => 'create',
-            'active' => 'supply',
-        ]);
+        //
     }
 
     /**
@@ -105,15 +101,19 @@ class SupplyController extends Controller
                 })
                 ->addColumn('stock', function($row){
                     $stock = $row->stock;
-                    return ucfirst($stock);
+                    return $stock;
                 })
-                ->addColumn('action', function($row){
-                    $actionBtn = '<button type="button" class="btn btn-success btn-sm btn-icon" onclick="addDetail('.$row->id.')">
-                                    <i class="fas fa-plus"></i>
-                                </button>';
-                    return $actionBtn;
+                ->addColumn('status', function($row){
+                    $status = $row->status;
+                    return $status == 1 ? 'Tersedia di Supplier' : 'Tidak Tersedia di Supplier';
                 })
-                ->rawColumns(['action'])
+                // ->addColumn('action', function($row){
+                //     $actionBtn = '<button type="button" class="btn btn-success btn-sm btn-icon" onclick="addDetail('.$row->id.')" data-toggle="tooltip" data-placement="top" title="Tambah Bahan Baku">
+                //                     <i class="fas fa-plus"></i>
+                //                 </button>';
+                //     return $actionBtn;
+                // })
+                // ->rawColumns(['action'])
                 ->make(true);
         }
     }

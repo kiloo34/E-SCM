@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionDetailsTable extends Migration
+class CreateStatusSupplyOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateTransactionDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaction_details', function (Blueprint $table) {
+        Schema::create('status_supply_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateTransactionDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction_details');
+        Schema::dropIfExists('status_supply_orders');
     }
 }

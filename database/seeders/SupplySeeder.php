@@ -17,24 +17,34 @@ class SupplySeeder extends Seeder
         \DB::table('supplies')->truncate();
         \DB::table('supplies')->insert([
             [
-                'name'      => 'kopi sachet',
-                'stock'     => 24
+                'name'  => 'kopi sachet',
+                'stock' => 24,
+                'price' => 800,
+                'status'=> 1
             ],
             [
-                'name'      => 'chocolatos',
-                'stock'     => 55
+                'name'  => 'chocolatos',
+                'stock' => 55,
+                'price' => 1500,
+                'status'=> 1
             ],
             [
-                'name'      => 'chocolatos matcha',
-                'stock'     => 43
+                'name'  => 'chocolatos matcha',
+                'stock' => 43,
+                'price' => 1500,
+                'status'=> 1
             ],
             [
-                'name'      => 'tahu',
-                'stock'     => 50
+                'name'  => 'tahu',
+                'stock' => 50,
+                'price' => 500,
+                'status'=> 1
             ],
             [
-                'name'      => 'tempe',
-                'stock'     => 10
+                'name'  => 'tempe',
+                'stock' => 10,
+                'price' => 5000,
+                'status'=> 2
             ],
         ]);
     }

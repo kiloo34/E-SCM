@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuppliesTable extends Migration
+class CreateStatusSuppliesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,9 @@ class CreateSuppliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplies', function (Blueprint $table) {
+        Schema::create('status_supplies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('stock')->default(0);
-            $table->string('price')->default(0);
-            $table->unsignedBigInteger('status');
-
-            $table->foreign('status')
-                ->references('id')
-                ->on('status_supplies');
-            
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -36,6 +27,6 @@ class CreateSuppliesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplies');
+        Schema::dropIfExists('status_supplies');
     }
 }

@@ -60,11 +60,10 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu-header">{{__("Pesan")}}</li>
-            <li class="{{ $active == 'pesan' ? 'active' : '' }}">
-                <a class="nav-link" href="#">
-                    <i class="far fa-comment"></i>
-                    <span>{{__('Pesan')}}</span>
+            <li class="{{ $active == 'pesanan' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('pesanan.index') }}">
+                    <i class="far fa-tag"></i>
+                    <span>{{__('Order Bahan Baku')}}</span>
                 </a>
             </li>
             @elseif (auth()->user()->role_id == 2)
@@ -81,11 +80,10 @@
                     <span>{{__('Stok Barang')}}</span>
                 </a>
             </li>
-            <li class="menu-header">{{__("Pesan")}}</li>
             <li class="{{ $active == 'pesan' ? 'active' : '' }}">
                 <a class="nav-link" href="#">
                     <i class="far fa-comment"></i>
-                    <span>{{__('Pesan')}}</span>
+                    <span>{{__('Pesanan Bahan Baku')}}</span>
                 </a>
             </li>
             @endif
