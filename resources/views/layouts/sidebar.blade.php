@@ -56,7 +56,7 @@
                         <a class="nav-link" href="{{ route('kategori.index') }}">{{__('Kategori Menu')}}</a>
                     </li>
                     <li class="{{ $active == 'menu' ? 'active' : '' }}">
-                        <a class="nav-link" href="#">{{__('Menu')}}</a>
+                        <a class="nav-link" href="{{ route('menu.index') }}">{{__('Menu')}}</a>
                     </li>
                 </ul>
             </li>
