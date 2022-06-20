@@ -15,40 +15,6 @@
                             <th>{{__('Stock Sisa')}}</th>
                             <th>{{__('Aksi')}}</th>
                         </thead>
-                        <tbody>
-                            {{-- <?php $no=1 ?>
-                            @foreach ($order as $o)
-                            <tr>
-                                <td>{{$no}}</td>
-                                <td>{{$o->invoice_number}}</td>
-                                <td>{{$o->status_transaksi->name}}</td>
-                                <td>{{$o->created_at == null ? '-' : $o->created_at}}</td>
-                                <td>
-                                    @if ($o->status_id != 4)
-                                    <a href="{{ route('ingoing.edit', $o->id) }}" 
-                                        class="btn btn-sm btn-icon icon-left btn-primary update-status-obat" 
-                                        data-id="{{ $o->id }}">
-                                        <i class="far fa-edit"></i> 
-                                        @if ($o->status_id == 1)
-                                        {{__('Bayar')}}
-                                        @elseif ($o->status_id == 2)
-                                        {{__('Kirim')}}
-                                        @elseif ($o->status_id == 3)
-                                        {{__('Selesai')}}
-                                        @endif
-                                    </a>
-                                    <a href="{{ route('ingoing.destroy', $o->id) }}"
-                                        class="btn btn-sm btn-danger hapus-obat" data-toggle="tooltip" data-placement="top"
-                                        title="Hapus Data" data-id="{{ $o->id }}">
-                                        <i class="fa fa-trash"></i> Batal
-                                    </a>
-                                    @endif
-                                    <a href="{{ route('ingoing.show', $o->id) }}" class="btn btn-sm btn-icon icon-left btn-info" ><i class="far fa-info"></i> {{__('Detail')}}</a>
-                                </td>
-                                <?php $no++ ?>
-                            </tr>
-                            @endforeach --}}
-                        </tbody>
                     </table>
                 </div>
             </div>

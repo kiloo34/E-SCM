@@ -8,19 +8,13 @@
             </div>
             <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped" id="table-2">
+                <table class="table table-striped" id="menu-table">
                     <thead>
                         <th class="text-center">#</th>
-                        <th>Task Name</th>
-                        <th>Progress</th>
-                        <th>Members</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>{{__('Nama')}}</th>
+                        <th>{{__('stok')}}</th>
+                        <th>{{__('aksi')}}</th>
                     </thead>
-                    <tbody>
-
-                    </tbody>
                 </table>
             </div>
             </div>
@@ -113,16 +107,29 @@
     </div> --}}
 </div>
 @endsection
-@push('css')
-{{-- <link rel="stylesheet" href="{{ asset('vendor/OwlCarousel/dist/assets/owl.carousel.min.css') }}"> --}}
-@endpush
-@push('js')
-{{-- <script src="{{ asset('vendor/OwlCarousel/dist/owl.carousel.min.js') }}"></script> --}}
-@endpush
-@push('script')
+@push('scripts')
 <script>
     $(document).ready(function() { 
-
+        $('#menu-table').DataTable({
+            "language": {
+                "emptyTable": "Menu Kosong"
+            },
+            "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('kasir.getMenu') }}",
+            "columns": [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'name', name: 'name'},
+                {data: 'stock', name: 'stock'},
+                {
+                    data: 'action', 
+                    name: 'action', 
+                    orderable: false, 
+                    searchable: false
+                },
+            ],
+        });
     })
 </script>
 @endpush
+@include('import.datatable')

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Manager\DashboardController as managerDashboard;
 use App\Http\Controllers\Manager\SupplyController as managerSupply;
 use App\Http\Controllers\Manager\KategoriController as managerKategoriMenu;
+use App\Http\Controllers\Manager\MenuController as managerMenu;
 
 use App\Http\Controllers\Kasir\DashboardController as kasirDashboard;
 
@@ -41,11 +42,15 @@ Route::middleware(['auth'])->group(function () {
         // Kategori Menu
         Route::resource('kategori', managerKategoriMenu::class);
         Route::get('ajax/manager/getKategori', [managerKategoriMenu::class, 'getKategori'])->name('manager.getKategori');
+        // Menu
+        Route::resource('menu', managerMenu::class);
+        Route::get('ajax/manager/getMenu', [managerMenu::class, 'getMenu'])->name('manager.getMenu');
     });
 
     Route::group(['middleware' => ['role:kasir']], function () {
         // Dashboard
         Route::get('kasir/dashboard', [kasirDashboard::class, 'index'])->name('kasir.dashboard');
+        Route::get('ajax/kasir/getMenu', [kasirDashboard::class, 'getMenu'])->name('kasir.getMenu');
     });
 
     Route::group(['middleware' => ['role:supplier']], function () {
