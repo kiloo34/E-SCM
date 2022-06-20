@@ -6,6 +6,7 @@ use App\Http\Controllers\Manager\DashboardController as managerDashboard;
 use App\Http\Controllers\Manager\SupplyController as managerSupply;
 use App\Http\Controllers\Manager\KategoriController as managerKategoriMenu;
 use App\Http\Controllers\Manager\MenuController as managerMenu;
+use App\Http\Controllers\Manager\PesanController as managerPesan;
 
 use App\Http\Controllers\Kasir\DashboardController as kasirDashboard;
 
@@ -45,6 +46,12 @@ Route::middleware(['auth'])->group(function () {
         // Menu
         Route::resource('menu', managerMenu::class);
         Route::get('ajax/manager/getMenu', [managerMenu::class, 'getMenu'])->name('manager.getMenu');
+        // Pesan Bahan Baku
+        Route::resource('pesanan', managerPesan::class);
+        Route::get('ajax/manager/getSupplyDetailOrder', [managerPesan::class, 'getSupplyDetailOrder'])->name('manager.getSupplyDetailOrder');
+        Route::get('ajax/manager/getAllSupply', [managerPesan::class, 'getAllSupply'])->name('manager.getAllSupply');
+        Route::get('ajax/manager/getAllSupplyOrder', [managerPesan::class, 'getAllSupplyOrder'])->name('manager.getAllSupplyOrder');
+        Route::get('ajax/manager/getPrice/{id}', [managerPesan::class, 'getPrice'])->name('manager.getPrice');
     });
 
     Route::group(['middleware' => ['role:kasir']], function () {

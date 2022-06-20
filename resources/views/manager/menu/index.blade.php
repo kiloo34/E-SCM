@@ -8,7 +8,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="kategori-table" class="table table-striped">
+                    <table id="menu-table" class="table table-striped">
                         <thead>
                             <th>{{__('No')}}</th>
                             <th>{{__('Nama')}}</th>
@@ -25,7 +25,7 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('#kategori-table').DataTable({
+        $('#menu-table').DataTable({
             "language": {
                 "emptyTable": "Menu Kosong"
             },
@@ -44,6 +44,9 @@
                 },
             ],
         });
+        $('#menu-table').on('draw.dt', function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
     });
 
     // $('.hapus-obat').on('click', function (e) {

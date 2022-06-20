@@ -13,7 +13,8 @@
                             <th>{{__('No')}}</th>
                             <th>{{__('Nama')}}</th>
                             <th>{{__('Stock Sisa')}}</th>
-                            <th>{{__('Aksi')}}</th>
+                            <th>{{__('Status')}}</th>
+                            {{-- <th>{{__('Aksi')}}</th> --}}
                         </thead>
                     </table>
                 </div>
@@ -36,14 +37,18 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'name', name: 'name'},
                 {data: 'stock', name: 'stock'}, 
-                {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false
-                },
+                {data: 'status', name: 'status'}, 
+                // {
+                //     data: 'action', 
+                //     name: 'action', 
+                //     orderable: false, 
+                //     searchable: false
+                // },
             ],
         });
+        $('#supply-table').on('draw.dt', function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
     });
 
     // $('.hapus-obat').on('click', function (e) {

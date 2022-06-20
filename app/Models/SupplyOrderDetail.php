@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Supply extends Model
+class SupplyOrderDetail extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'supplies';
+    protected $table = 'supply_order_details';
 
     /**
      * The primary key associated with the table.
@@ -37,39 +36,31 @@ class Supply extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'stock',
-        'price',
-        'status'
+        'supply_order_id',
+        'supply_id',
+        'qty',
+        'total_harga'
     ];
 
-    /**
-     * Get the supply_order_detail associated with the Supply
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function supply_order_detail()
-    {
-        return $this->hasOne(SupplyOrderDetail::class);
-    }
+    protected $with = ['order_supply', 'supply'];
 
     /**
-     * Get the status_supply_order that owns the Supply
+     * Get the order_supply that owns the SupplyOrderDetail
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function status_supply_order()
+    public function order_supply()
     {
-        return $this->belongsTo(StatusSupplyOrder::class);
+        return $this->belongsTo(SupplyOrder::class);
     }
 
     /**
-     * Get the status_supply that owns the Supply
+     * Get the supply that owns the SupplyOrderDetail
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function status_supply()
+    public function supply()
     {
-        return $this->belongsTo(StatusSupply::class);
+        return $this->belongsTo(Supply::class);
     }
 }
