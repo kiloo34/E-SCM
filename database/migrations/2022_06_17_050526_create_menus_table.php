@@ -18,8 +18,19 @@ class CreateMenusTable extends Migration
             $table->string('name');
             $table->string('harga');
             $table->string('stock')->default(0);
+
             $table->unsignedBigInteger('kategori_id');
-            $table->foreign('kategori_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('status');
+            
+            $table->foreign('kategori_id')
+                ->references('id')
+                ->on('categories')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('status')
+                ->references('id')
+                ->on('status_menus');
+            
             $table->softDeletes();
             $table->timestamps();
         });

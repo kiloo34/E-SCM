@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\StatusMenu;
 use App\Models\SupplyOrder;
 use Illuminate\Database\Seeder;
 
@@ -20,11 +21,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             SupplySeeder::class,
             CategorySeeder::class,
+            StatusMenuSeeder::class,
             MenuSeeder::class,
             StatusSupplyOrderSeeder::class,
             StatusSupplySeeder::class,
             SupplyOrderSeeder::class,
             SupplyOrderDetailSeeder::class,
+            MenuDetailSeeder::class,
         ]);
     }
 }

@@ -63,4 +63,14 @@ class Supply extends Model
     {
         return $this->belongsTo(StatusSupply::class);
     }
+
+    /**
+     * Get the menu_detail associated with the Supply
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function menu_detail()
+    {
+        return $this->hasOne(MenuDetail::class);
+    }
 }

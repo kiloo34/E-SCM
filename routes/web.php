@@ -38,15 +38,30 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:manager']], function () {
         //Dashboard
         Route::get('manager/dashboard', [managerDashboard::class, 'index'])->name('manager.dashboard');
+        
         //Supply
         Route::resource('supply', managerSupply::class);
         Route::get('ajax/getSupply', [managerSupply::class, 'getSupply'])->name('manager.getSupply');
+        
         // Kategori Menu
         Route::resource('kategori', managerKategoriMenu::class);
-        Route::get('ajax/manager/getKategori', [managerKategoriMenu::class, 'getKategori'])->name('manager.getKategori');
+        Route::get('ajax/manager/kategori/getKategori', [managerKategoriMenu::class, 'getKategori'])->name('manager.kategori.getKategori');
+        
         // Menu
         Route::resource('menu', managerMenu::class);
+        Route::get('manager/menu/getFieldSupply', [managerMenu::class, 'getSupplyField'])->name('manager.menu.getSupplyField');
+        Route::get('manager/menu/addStock/{menu}', [managerMenu::class, 'addStock'])->name('manager.menu.addStock');
+        Route::get('manager/menu/addDetailSupplyMenu/{menu}', [managerMenu::class, 'addDetailSupplyMenu'])->name('manager.menu.addDetailSupplyMenu');
+        Route::put('manager/menu/emptyStock/{menu}', [managerMenu::class, 'emptyStock'])->name('manager.menu.emptyStock');
+        Route::post('manager/menu/storeStock/{menu}', [managerMenu::class, 'storeStock'])->name('manager.menu.storeStock');
+        Route::post('manager/menu/storeDetailSupplyMenu/{menu}', [managerMenu::class, 'storeDetailSupplyMenu'])->name('manager.menu.storeDetailSupplyMenu');
+        
+        Route::delete('manager/menu/{menu}/deleteItem/{id}', [managerMenu::class, 'destroyDetailSupplyMenu'])->name('manager.menu.destroyDetailSupplyMenu');
+
         Route::get('ajax/manager/getMenu', [managerMenu::class, 'getMenu'])->name('manager.getMenu');
+        Route::get('ajax/manager/getKategori', [managerMenu::class, 'getKategori'])->name('manager.menu.getKategori');
+        Route::get('ajax/manager/getDetailSupplyMenu/{id}', [managerMenu::class, 'getDetailSupplyMenu'])->name('manager.menu.getDetailSupplyMenu');
+
         // Pesan Bahan Baku
         Route::resource('pesanan', managerPesan::class);
         

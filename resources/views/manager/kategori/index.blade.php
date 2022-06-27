@@ -30,7 +30,7 @@
             },
             "processing": true,
             "serverSide": true,
-            "ajax": "{{ route('manager.getKategori') }}",
+            "ajax": "{{ route('manager.kategori.getKategori') }}",
             "columns": [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'name', name: 'name'},
