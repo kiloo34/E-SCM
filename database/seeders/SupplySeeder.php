@@ -46,6 +46,12 @@ class SupplySeeder extends Seeder
                 'price' => 5000,
                 'status'=> 2
             ],
+            [
+                'name'  => 'beng beng coklat',
+                'stock' => 120,
+                'price' => 1650,
+                'status'=> 1
+            ],
         ]);
     }
 }

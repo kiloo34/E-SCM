@@ -74,15 +74,15 @@
                 </a>
             </li> --}}
             @elseif (auth()->user()->role_id == 3)
-            <li class="{{ $active == 'stok' ? 'active' : '' }}">
+            <li class="{{ $active == 'supply' ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('supplier.index') }}">
                     <i class="far fa-cubes"></i>
-                    <span>{{__('Stok Barang')}}</span>
+                    <span>{{__('Stok Bahan Baku')}}</span>
                 </a>
             </li>
             <li class="{{ $active == 'pesan' ? 'active' : '' }}">
-                <a class="nav-link" href="#">
-                    <i class="far fa-comment"></i>
+                <a class="nav-link" href="{{ route('supplier_pesanan.index') }}">
+                    <i class="far fa-tag"></i>
                     <span>{{__('Pesanan Bahan Baku')}}</span>
                 </a>
             </li>

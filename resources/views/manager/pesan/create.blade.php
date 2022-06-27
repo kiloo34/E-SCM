@@ -6,12 +6,18 @@
             <div class="card-header">
                 <h4>Buat Pesanan {{$title == 'supply' ? 'Bahan Baku' : ucfirst($title)}}</h4>
                 <div class="card-header-action">
-                    <a href="{{ route('pesanan.index') }}" class="btn btn-danger">Kembali </a>
+                    <form action="{{ route('pesanan.destroy', $data->id) }}" method="post">
+                        @method('delete')
+                        @csrf
+                        <input type="submit" value="Batalkan" class="btn btn-danger">
+                    </form>
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('supply.store') }}" method="post">
+                <form action="{{ route('pesanan.update', $data->id) }}" method="POST" id="final-form">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" id="list_supply_order_id" name="supply_order_id" value="{{$data->id}}">
                     <div class="table-responsive">
                         <table id="detail-supply-table" class="table table-striped">
                             <thead>
@@ -26,76 +32,13 @@
                             </thead>
                             <tfoot>
                                 <th colspan="4" class="text-right">{{__('Total')}}</th>
-                                <th>hasil</th>
-                                <th></th>
+                                <th colspan="2" id="kolom-hasil">{{$data->total}}</th>
                             </tfoot>
                         </table>
                     </div>
-                    {{-- <div class="form-group">
-                        <label>{{__('Tipe Obat')}}</label>
-                        <select name="tipe" id="tipe" class="form-control @error('tipe') is-invalid @enderror">
-                            @foreach ($tipe as $t)
-                                <option value="{{$t->id}}">{{$t->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('tipe')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                    <div class="col text-center">
+                        <input type="submit" value="Buat Pesanan" class="btn btn-success">
                     </div>
-                    <div class="form-group">
-                        <label>{{__('Nama')}}</label>
-                        <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                            value="{{ old('name') }}" autocomplete="name" autofocus>
-                        @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label>{{__('Satuan')}}</label>
-                        <div class="row">
-                            <div class="col-md-6 col-sm-12 mt-2">
-                                <div class="form-group">
-                                <div class="input-group">
-                                    <input name="mg" type="text" class="form-control @error('mg') is-invalid @enderror"
-                                        value="{{ old('mg') }}" autocomplete="mg" autofocus>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            mg
-                                        </div>
-                                    </div>
-                                </div>
-                                @error('mg')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12 mt-2">
-                                <div class="form-group">
-                                <div class="input-group">
-                                    <input name="ml" type="text" class="form-control @error('ml') is-invalid @enderror"
-                                        value="{{ old('ml') }}" autocomplete="ml" autofocus>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            ml
-                                        </div>
-                                    </div>
-                                </div>
-                                @error('ml')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                                </div>
-                            </div>    
-                        </div>
-                    </div>
-                    <input type="submit" class="btn btn-primary float-right" value="Tambah"> --}}
                 </form>
             </div>
         </div>
@@ -105,13 +48,12 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('supply.store') }}" method="post">
+                <form action="#" id="detail-form" method="post">
                     @csrf
+                    <input type="hidden" id="supply_order_id" name="supply_order_id" value="{{$data->id}}">
                     <div class="form-group">
                         <label>{{__('Nama')}}</label>
                         <select name="name" id="name" class="form-control @error('tipe') is-invalid @enderror"></select>
-                        {{-- <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                            value="{{ old('name') }}" autocomplete="name" autofocus> --}}
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -122,7 +64,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>{{__('Kuantitas')}}</label>
-                                <input name="qty" id="qty" type="text" class="form-control @error('qty') is-invalid @enderror"
+                                <input name="qty" id="qty" type="number" class="form-control @error('qty') is-invalid @enderror"
                                     value="{{ old('qty') }}" autocomplete="qty" onkeyup="totalHarga()" autofocus>
                                 @error('qty')
                                 <span class="invalid-feedback" role="alert">
@@ -166,6 +108,10 @@
     $(document).ready(function() {
         $("#name").select2();
         getNama();
+        
+        var urlDetailOrder = "{{ route('manager.getSupplyDetailOrder', ":id") }}"
+        var id = $('#list_supply_order_id').val()
+        urlDetailOrder = urlDetailOrder.replace(':id', id)
 
         $('#detail-supply-table').DataTable({
             "language": {
@@ -173,13 +119,13 @@
             },
             "processing": true,
             "serverSide": true,
-            "ajax": "{{ route('manager.getSupplyDetailOrder') }}",
+            "ajax": urlDetailOrder,
             "columns": [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'name', name: 'name',orderable: false, searchable: false},
+                {data: 'name', name: 'name'},
                 {data: 'satuan', name: 'satuan',orderable: false, searchable: false}, 
-                {data: 'qty', name: 'qty',orderable: false, searchable: false}, 
-                {data: 'price', name: 'price',orderable: false, searchable: false}, 
+                {data: 'qty', name: 'qty'}, 
+                {data: 'price', name: 'price'}, 
                 {
                     data: 'action', 
                     name: 'action', 
@@ -191,6 +137,7 @@
         $('#supply-table').on('draw.dt', function() {
             $('[data-toggle="tooltip"]').tooltip();
         })
+        updateTotal();
     });
 
     function getNama() {
@@ -199,19 +146,34 @@
         const a = '<option value=null>Pilih Nama Bahan Baku</option>'
 
         $.get(url, function(data) {
+            // console.log(data);
             select.empty();
             select.append(a)
             $.each(data, function(key, value) {
+                console.log(value);
                 select.append('<option value=' + value.id + '>' + value.name + '</option>');
             });
         });
     }
 
-    $('#name').change(function() {
-        var target = $(this).val();
+    function updateTotal() {
+        var supplyOrder = {{ $data->id }}
+        var url = "{{ route('manager.getSupplyOrder', ":supplyOrder") }}"
+        url = url.replace(':supplyOrder', supplyOrder)
+        
+        $.get(url, function(data) {
+            var kolomTotal = $('#kolom-hasil')
+            $.each(kolomTotal, function(key, value) {
+                var target = kolomTotal[key]
+                target.val(data.total)
+            });
+        });
+    }
+
+    $('#name').on('select2:select', function(e) {
+        var target = $('#name').val();
         var url = '{{ route("manager.getPrice", ':id') }}';
         url = url.replace(':id', target);
-        console.log(url);
         $.get(url, function(data) {
             var input = $('#price');
             input.empty();
@@ -226,11 +188,7 @@
         var input = $('#total');
 
         if (harga == '') {
-            iziToast.error({
-                title: 'Error!',
-                message: 'isi Data Bahan Baku dahulu',
-                position: 'topRight'
-            });
+            toastEvent('Error!', 'isi Data Bahan Baku dahulu', 'topRight', 'error')
         } else {
             input.empty();
             hasil = qty * harga;
@@ -238,110 +196,173 @@
         }
     }
 
-    // $('.hapus-obat').on('click', function (e) {
+    $('#detail-form').submit(function (e) { 
+        e.preventDefault();
+        
+        var supply_id = $('#name').val();
+        var qty = $('#qty').val();
+        var price = $('#price').val();
+        var total = $('#total').val();
+
+        console.log(supply_id);
+        console.log(qty);
+
+        if (qty == '' && supply_id == '') {
+            toastEvent('Error!', 'isi Data Kuantitas dan Nama dahulu', 'topRight', 'error')
+        } else if (qty == '') {
+            toastEvent('Error!', 'isi Data Kuantitas dahulu', 'topRight', 'error')
+        } else if (supply_id == '') {
+            toastEvent('Error!', 'isi Data Bahan Baku dahulu', 'topRight', 'error')
+        } else {
+            var id = $("#supply_order_id").val();
+            
+            var url = "{{ route('manager.storeDetailOrderSupply', ":id") }}";
+            url = url.replace(':id', id);
+
+            var data = {
+                id: id,
+                supply_id: supply_id,
+                qty: qty,
+                total: total
+            }
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    console.log('masuk success');
+                    toastEvent('Success!', response.message, 'topRight', 'success')
+                    reloadTable('#detail-supply-table', 100);
+                    $('#detail-form')[0].reset()
+                },
+                error: function (data) {
+                    console.log('masuk success');
+                    toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
+                }
+            });
+            // this.submit();
+        }
+    });
+
+    // $('#final-form').submit(function (e) { 
     //     e.preventDefault();
+        
+    //     // var supply_id = $('#list_supply_order_id').val();
+    //     // // var qty = $('#qty').val();
+    //     // // var price = $('#price').val();
+    //     // // var total = $('#total').val();
 
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-
-    //     var id = $(this).data("id");
-    //     // var url = $('.hapus').attr('href');
-    //     var url = "{{ route('supply.destroy', ":id") }}";
+    //     var id = $("#list_supply_order_id").val();
+            
+    //     var url = "{{ route('pesanan.update', ":id") }}";
     //     url = url.replace(':id', id);
-    //     $object=$(this);
 
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin ingin menghapus Data Obat ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'DELETE',
-    //                 data: {id: id},
-    //                 success: function (response) {
-    //                     $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Dihapus!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2000);
-    //                 },
-    //                 error: function (data) {
-    //                     console.log(data);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Dihapus!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
+    //     var data = {
+    //         id: id,
+    //     }
+
+    //     $.ajax({
+    //         url: url,
+    //         type: 'POST',
+    //         data: data,
+    //         success: function (response) {
+    //             console.log('masuk success');
+    //             toastEvent('Success!', response.message, 'topRight', 'success')
+    //             reloadTable('#detail-supply-table', 100);
+    //             $('#detail-form')[0].reset()
+    //         },
+    //         error: function (data) {
+    //             console.log('masuk success');
+    //             toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
     //         }
     //     });
-    // })
+    // });
 
-    // $('.update-status-obat').on('click', function (e) {
-    //     e.preventDefault();
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     var id = $(this).data("id");
-    //     var url = "{{ route('supply.update', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
+    function reloadTable(selector, counter) {
+        updateTotal()
+        setTimeout(function() {
+            $(selector).DataTable().ajax.reload();
+        }, 100);
+    }
 
-    //     console.log(url, id);
+    function toastEvent(title, message, position, type) {
+        if (type == 'error') {
+            iziToast.error({
+                title: title,
+                message: message,
+                position: position
+            });   
+        } else {
+            iziToast.success({
+                title: title,
+                message: message,
+                position: position
+            });
+        }
+    }
 
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin Ubah status Data Order ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'PUT',
-    //                 data: {id: id, '_method':'PUT'},
-    //                 success: function (response) {
-    //                     // $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Diupdate!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2500);
-    //                 },
-    //                 error: function (jqXHR, textStatus, errorThrown) {
-    //                     console.log(jqXHR, textStatus, errorThrown);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Diupdate!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
+    function removeItem(id) {
+        var supplyOrder = {{ $data->id }}
+        var supply_id = id
+        var url = "{{ route('manager.deleteDetailOrderSupplyItem', [":supplyOrder", ":supply"]) }}"
+        url = url.replace(':supplyOrder', supplyOrder)
+        url = url.replace(':supply', supply_id)
 
-    // function reloadPage(counter) {
-    //     setTimeout(function () { 
-    //         location.reload();
-    //     }, counter)
-    // }
+        console.log(url);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function(data) {
+                console.log(data);
+                toastEvent('Success!', data.message, 'topRight', 'success')
+                reloadTable('#detail-supply-table', 100);
+            }
+        });
+    }
+
+    function minusItem(id) {
+        var supplyOrder = {{ $data->id }}
+        var supply_id = id
+        console.log('masuk function update minus Item', supplyOrder, supply_id)
+        var url = "{{ route('manager.minusDetailOrderSupplyItem', [":supplyOrder", ":supply"]) }}"
+        url = url.replace(':supplyOrder', supplyOrder)
+        url = url.replace(':supply', supply_id)
+
+        console.log(url);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function(data) {
+                console.log(data);
+                toastEvent('Success!', data.message, 'topRight', 'success')
+                reloadTable('#detail-supply-table', 100);
+            }
+        });
+    }
+
+    function plusItem(id) {
+        var supplyOrder = {{ $data->id }}
+        var supply_id = id
+        console.log('masuk function update plus Item', supplyOrder, supply_id)
+        var url = "{{ route('manager.plusDetailOrderSupplyItem', [":supplyOrder", ":supply"]) }}"
+        url = url.replace(':supplyOrder', supplyOrder)
+        url = url.replace(':supply', supply_id)
+
+        console.log(url);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function(data) {
+                console.log(data);
+                toastEvent('Success!', data.message, 'topRight', 'success')
+                reloadTable('#detail-supply-table', 100);
+            }
+        });
+    }
 </script>
 @endpush
 @include('import.datatable')

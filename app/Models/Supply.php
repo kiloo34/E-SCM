@@ -40,7 +40,8 @@ class Supply extends Model
         'name',
         'stock',
         'price',
-        'status'
+        'status',
+        'supply_id'
     ];
 
     /**
@@ -51,16 +52,6 @@ class Supply extends Model
     public function supply_order_detail()
     {
         return $this->hasOne(SupplyOrderDetail::class);
-    }
-
-    /**
-     * Get the status_supply_order that owns the Supply
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status_supply_order()
-    {
-        return $this->belongsTo(StatusSupplyOrder::class);
     }
 
     /**
