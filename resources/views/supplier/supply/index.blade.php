@@ -51,100 +51,6 @@
         });
     });
 
-    // $('.hapus-obat').on('click', function (e) {
-    //     e.preventDefault();
-
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-
-    //     var id = $(this).data("id");
-    //     // var url = $('.hapus').attr('href');
-    //     var url = "{{ route('supply.destroy', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
-
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin ingin menghapus Data Obat ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'DELETE',
-    //                 data: {id: id},
-    //                 success: function (response) {
-    //                     $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Dihapus!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2000);
-    //                 },
-    //                 error: function (data) {
-    //                     console.log(data);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Dihapus!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
-
-    // $('.update-status-obat').on('click', function (e) {
-    //     e.preventDefault();
-
-    //     var id = $(this).data("id");
-    //     var url = "{{ route('supply.update', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
-
-    //     console.log(url, id);
-
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin Ubah status Data Order ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'PUT',
-    //                 data: {id: id, '_method':'PUT'},
-    //                 success: function (response) {
-    //                     // $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Diupdate!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2500);
-    //                 },
-    //                 error: function (jqXHR, textStatus, errorThrown) {
-    //                     console.log(jqXHR, textStatus, errorThrown);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Diupdate!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
 
     function toastEvent(title, message, position, type) {
         if (type == 'error') {
@@ -175,40 +81,34 @@
         
         console.log(url);
 
-        // Swal.fire({
-        //     title: 'Apa anda Yakin?',
-        //     text: "Yakin ingin Mengubah Status Bahan Baku?",
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'Ya!'
-        // }).then((result) => {
-        //     if (result.value) {
-        //         $.ajax({
-        //             url: url,
-        //             type: 'PUT',
-        //             data: {id: id, '_method':'PUT'},
-        //             success: function (response) {
-        //                 console.log('masuk success');
-        //                 console.log(response);
-        //                 toastEvent('Success!', response.message, 'topRight', 'success')
-        //                 reloadTable('#supply-table', 100);
-        //             },
-        //             error: function (data) {
-        //                 console.log('masuk error');
-        //                 toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
-        //             }
-        //         });
-        //     }
-        // });
+        Swal.fire({
+            title: 'Apa anda Yakin?',
+            text: "Yakin ingin Mengubah Status Bahan Baku?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {id: id, '_method':'PUT'},
+                    success: function (response) {
+                        console.log('masuk success');
+                        console.log(response);
+                        toastEvent('Success!', response.message, 'topRight', 'success')
+                        reloadTable('#supply-table', 100);
+                    },
+                    error: function (data) {
+                        console.log('masuk error');
+                        toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
+                    }
+                });
+            }
+        });
     }
-
-    // function reloadPage(counter) {
-    //     setTimeout(function () { 
-    //         location.reload();
-    //     }, counter)
-    // }
 </script>
 @endpush
 @include('import.datatable')
