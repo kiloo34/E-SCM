@@ -4,7 +4,10 @@
     <div class="col-md-12 ">
         <div class="card">
             <div class="card-header">
-                <h4>Daftar {{$title == 'supply' ? 'Bahan Baku' : ucfirst($title)}}</h4>
+                <h4>Daftar {{ucfirst($title)}}</h4>
+                <div class="card-header-action">
+                    <a href="{{ route('menu.create') }}" class="btn btn-success">Tambah {{ucfirst($title)}}</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -12,7 +15,9 @@
                         <thead>
                             <th>{{__('No')}}</th>
                             <th>{{__('Nama')}}</th>
+                            <th>{{__('Harga Per item')}}</th>
                             <th>{{__('Stock')}}</th>
+                            <th>{{__('Status')}}</th>
                             <th>{{__('Aksi')}}</th>
                         </thead>
                     </table>
@@ -35,7 +40,9 @@
             "columns": [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'name', name: 'name'},
+                {data: 'harga', name: 'harga'},
                 {data: 'stock', name: 'stock'},
+                {data: 'status', name: 'status'},
                 {
                     data: 'action', 
                     name: 'action', 
@@ -49,110 +56,64 @@
         })
     });
 
-    // $('.hapus-obat').on('click', function (e) {
-    //     e.preventDefault();
+    function emptyStock(id) {
+        var url = "{{ route('manager.menu.emptyStock', ":id") }}";
+        url = url.replace(':id', id);
+        
+        console.log(url);
 
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
+        Swal.fire({
+            title: 'Apa anda Yakin?',
+            text: "Yakin ingin Merubah stok ke Habis?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {id: id, '_method':'PUT'},
+                    success: function (response) {
+                        console.log('masuk success');
+                        console.log(response);
+                        toastEvent('Success!', response.message, 'topRight', 'success')
+                        reloadTable('#menu-table', 100);
+                    },
+                    error: function (data) {
+                        console.log('masuk error');
+                        toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
+                    }
+                });
+                console.log('masuk swall');
+            }
+        });
+    }
 
-    //     var id = $(this).data("id");
-    //     // var url = $('.hapus').attr('href');
-    //     var url = "{{ route('supply.destroy', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
+    function toastEvent(title, message, position, type) {
+        if (type == 'error') {
+            iziToast.error({
+                title: title,
+                message: message,
+                position: position
+            });   
+        } else {
+            iziToast.success({
+                title: title,
+                message: message,
+                position: position
+            });
+        }
+    }
 
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin ingin menghapus Data Obat ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'DELETE',
-    //                 data: {id: id},
-    //                 success: function (response) {
-    //                     $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Dihapus!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2000);
-    //                 },
-    //                 error: function (data) {
-    //                     console.log(data);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Dihapus!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
-
-    // $('.update-status-obat').on('click', function (e) {
-    //     e.preventDefault();
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     var id = $(this).data("id");
-    //     var url = "{{ route('supply.update', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
-
-    //     console.log(url, id);
-
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin Ubah status Data Order ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'PUT',
-    //                 data: {id: id, '_method':'PUT'},
-    //                 success: function (response) {
-    //                     // $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Diupdate!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2500);
-    //                 },
-    //                 error: function (jqXHR, textStatus, errorThrown) {
-    //                     console.log(jqXHR, textStatus, errorThrown);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Diupdate!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
-
-    // function reloadPage(counter) {
-    //     setTimeout(function () { 
-    //         location.reload();
-    //     }, counter)
-    // }
+    function reloadTable(selector, counter) {
+        // updateTotal()
+        setTimeout(function() {
+            $(selector).DataTable().ajax.reload();
+        }, 100);
+    }
 </script>
 @endpush
 @include('import.datatable')

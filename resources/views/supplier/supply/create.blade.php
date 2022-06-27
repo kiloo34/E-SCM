@@ -38,7 +38,7 @@
                             <div class="form-group">
                                 <label>{{__('Kuantitas')}}</label>
                                 <input name="qty" id="qty" type="text" class="form-control @error('qty') is-invalid @enderror"
-                                    value="{{ old('qty') }}" autocomplete="qty" autofocus>
+                                    value="{{ old('qty') }}" autocomplete="qty" autofocus value="0" readonly>
                                 @error('qty')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -82,82 +82,6 @@
         //     }
         // });
     });
-
-    // jQuery.validator.setDefaults({
-    //     debug: true,
-    //     success: "valid"
-    // });
-    // $('#supply-form').validate({
-    //     rules: {
-    //         qty: {
-    //             digits: true
-    //         },
-    //         price: {
-    //             digits: true
-    //         },
-    //         name: {
-    //             required: true,
-    //         }
-    //     }
-    // });
-
-    function getStatus() {
-        var url = '{{ route("supplier.getStatusSupply") }}';
-        var select = $('#status');
-        const a = '<option value=null>Pilih Status</option>'
-
-        $.get(url, function(data) {
-            console.log(data);
-            select.empty();
-            select.append(a)
-            $.each(data, function(key, value) {
-                select.append('<option value=' + value.id + '>' + value.name + '</option>');
-            });
-        });
-    }
-
-    $('#status').change(function() {
-        var target = $(this).val();
-        if (target != 1) {
-            $('#qty').val('0').prop('readonly', true);
-            $('#price').val('0').prop('readonly', true);
-        } else {
-            $('#qty').empty().prop('readonly', false);
-            $('#price').empty().prop('readonly', false);
-        }
-    })
-
-    $('form').submit(function(e) {
-        e.preventDefault();
-
-        var status = $('#status').val();
-        var qty = $('#qty').val();
-        var price = $('#price').val();
-
-        if (status == 1) {
-            if (qty == '' && price == '') {
-                errorToastEvent('Error!', 'isi Data Kuantitas dan Harga dahulu', 'topRight')
-            } else if (qty == '') {
-                errorToastEvent('Error!', 'isi Data Kuantitas dahulu', 'topRight')
-            } else if (price == '') {
-                errorToastEvent('Error!', 'isi Data Bahan Harga dahulu', 'topRight')
-            } else {
-                this.submit();
-            }
-        } else if (status == 'null') {
-            errorToastEvent('Error!', 'Status Kosong', 'topRight')
-        } else {
-            this.submit();
-        }
-    });
-
-    function errorToastEvent(title, message, position) {
-        iziToast.error({
-            title: title,
-            message: message,
-            position: position
-        });
-    }
 </script>
 @endpush
 @include('import.datatable')

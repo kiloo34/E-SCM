@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Menu extends Model
+class StatusMenu extends Model
 {
-    use HasFactory, SoftDeletes;
-
+    use HasFactory;
+    
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'menus';
+    protected $table = 'status_menus';
 
     /**
      * The primary key associated with the table.
@@ -38,29 +37,15 @@ class Menu extends Model
      */
     protected $fillable = [
         'name',
-        'harga',
-        'stock',
-        'status',
-        'kategori_id'
     ];
 
     /**
-     * Get the menu_detail associated with the Menu
+     * Get all of the supply for the StatusSupply
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function menu_detail()
+    public function menu()
     {
-        return $this->hasOne(MenuDetail::class);
-    }
-
-    /**
-     * Get the status that owns the Menu
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
-    {
-        return $this->belongsTo(StatusMenu::class);
+        return $this->hasOne(Menu::class);
     }
 }

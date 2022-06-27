@@ -245,40 +245,6 @@
         }
     });
 
-    // $('#final-form').submit(function (e) { 
-    //     e.preventDefault();
-        
-    //     // var supply_id = $('#list_supply_order_id').val();
-    //     // // var qty = $('#qty').val();
-    //     // // var price = $('#price').val();
-    //     // // var total = $('#total').val();
-
-    //     var id = $("#list_supply_order_id").val();
-            
-    //     var url = "{{ route('pesanan.update', ":id") }}";
-    //     url = url.replace(':id', id);
-
-    //     var data = {
-    //         id: id,
-    //     }
-
-    //     $.ajax({
-    //         url: url,
-    //         type: 'POST',
-    //         data: data,
-    //         success: function (response) {
-    //             console.log('masuk success');
-    //             toastEvent('Success!', response.message, 'topRight', 'success')
-    //             reloadTable('#detail-supply-table', 100);
-    //             $('#detail-form')[0].reset()
-    //         },
-    //         error: function (data) {
-    //             console.log('masuk success');
-    //             toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
-    //         }
-    //     });
-    // });
-
     function reloadTable(selector, counter) {
         updateTotal()
         setTimeout(function() {
