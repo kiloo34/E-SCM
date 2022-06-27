@@ -36,7 +36,7 @@ class StatusSupplyOrder extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'name'
     ];
 
     /**
@@ -46,6 +46,6 @@ class StatusSupplyOrder extends Model
      */
     public function supply_order()
     {
-        return $this->hasMany(SupplyOrder::class);
+        return $this->hasOne(SupplyOrder::class);
     }
 }

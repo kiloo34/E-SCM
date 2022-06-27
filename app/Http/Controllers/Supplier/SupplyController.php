@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Supplier;
 
 use App\Http\Controllers\Controller;
+use App\Models\StatusSupply;
 use App\Models\Supply;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -45,7 +47,33 @@ class SupplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->qty);
+
+        $request->validate([
+            'name' => 'required|regex:/^[a-zA-Z ]+$/|unique:supplies,name',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+            'status' => 'required',
+        ], [
+            'name.unique' => 'Tipe Obat sudah ditambahkan',
+            'name.regex' => 'Tipe Obat harus huruf',
+            'name.required' => 'Nama harap diisi',
+            'qty.required' => 'Stok harap diisi',
+            'qty.numeric' => 'Stok harus angka',
+            'price.required' => 'Harga harap diisi',
+            'price.numeric' => 'Harga harus angka',
+            'status.required' => 'Status harap diisi',
+        ]);
+        
+        $data = Supply::create([
+            'name' => $request->name,
+            'stock' => $request->qty,
+            'price' => $request->price,
+            'status' => $request->status,
+            'created_at' => Carbon::now()
+        ]);
+
+        return redirect()->route('supplier.index')->with('success_msg', 'Bahan Baku ' . $data->name . ' berhasil ditambah');
     }
 
     /**
@@ -79,7 +107,14 @@ class SupplyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Supply::where('id', $id)
+                    ->where('deleted_at', NULL)
+                    ->first();
+        $data->status == 1 ? $data->update(['status'=>2]) : $data->update(['status'=>1]);
+        return response()->json([
+            // 'data' => $this->cekOrderSupply($request->id),
+            'message' => 'update data berhasil',
+        ]);
     }
 
     /**
@@ -107,14 +142,34 @@ class SupplyController extends Controller
                     $stock = $row->stock;
                     return ucfirst($stock);
                 })
+                ->addColumn('status', function($row){
+                    $status = $row->status;
+                    return $status == 1 ? 'Tersedia' : 'Tidak Tersedia';
+                })
                 ->addColumn('action', function($row){
-                    $actionBtn = '<button type="button" class="btn btn-success btn-sm btn-icon" onclick="addDetail('.$row->id.')">
-                                    <i class="fas fa-plus"></i>
+                    $actionBtn = '';
+                    if ($row->status == 1) {
+                        $actionBtn .= '<button type="button" class="btn btn-info btn-sm btn-icon" onclick="updateItem('.$row->id.')">
+                                    <i class="fas fa-info"></i>
+                                    Ubah ke Tidak Tersedia
                                 </button>';
+                    } else {
+                        $actionBtn .= '<button type="button" class="btn btn-info btn-sm btn-icon" onclick="updateItem('.$row->id.')">
+                                    <i class="fas fa-info"></i>
+                                    Ubah ke Tersedia
+                                </button>';
+                    }
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+    }
+
+    public function getStatusSupply(Request $request)
+    {   
+        if ($request->ajax()) {
+            return StatusSupply::all();
         }
     }
 }

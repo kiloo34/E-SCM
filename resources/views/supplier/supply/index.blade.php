@@ -5,6 +5,9 @@
         <div class="card">
             <div class="card-header">
                 <h4>Daftar {{$title == 'supply' ? 'Bahan Baku' : ucfirst($title)}}</h4>
+                <div class="card-header-action">
+                    <a href="{{ route('supplier.create') }}" class="btn btn-success">Tambah {{$title == 'pesanan' ? 'Bahan Baku' : ucfirst($title)}}</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -12,43 +15,10 @@
                         <thead>
                             <th>{{__('No')}}</th>
                             <th>{{__('Nama')}}</th>
-                            <th>{{__('Stock Sisa')}}</th>
+                            <th>{{__('Stock Sisa Produsen')}}</th>
+                            <th>{{__('Status Bahan Baku')}}</th>
                             <th>{{__('Aksi')}}</th>
                         </thead>
-                        <tbody>
-                            {{-- <?php $no=1 ?>
-                            @foreach ($order as $o)
-                            <tr>
-                                <td>{{$no}}</td>
-                                <td>{{$o->invoice_number}}</td>
-                                <td>{{$o->status_transaksi->name}}</td>
-                                <td>{{$o->created_at == null ? '-' : $o->created_at}}</td>
-                                <td>
-                                    @if ($o->status_id != 4)
-                                    <a href="{{ route('ingoing.edit', $o->id) }}" 
-                                        class="btn btn-sm btn-icon icon-left btn-primary update-status-obat" 
-                                        data-id="{{ $o->id }}">
-                                        <i class="far fa-edit"></i> 
-                                        @if ($o->status_id == 1)
-                                        {{__('Bayar')}}
-                                        @elseif ($o->status_id == 2)
-                                        {{__('Kirim')}}
-                                        @elseif ($o->status_id == 3)
-                                        {{__('Selesai')}}
-                                        @endif
-                                    </a>
-                                    <a href="{{ route('ingoing.destroy', $o->id) }}"
-                                        class="btn btn-sm btn-danger hapus-obat" data-toggle="tooltip" data-placement="top"
-                                        title="Hapus Data" data-id="{{ $o->id }}">
-                                        <i class="fa fa-trash"></i> Batal
-                                    </a>
-                                    @endif
-                                    <a href="{{ route('ingoing.show', $o->id) }}" class="btn btn-sm btn-icon icon-left btn-info" ><i class="far fa-info"></i> {{__('Detail')}}</a>
-                                </td>
-                                <?php $no++ ?>
-                            </tr>
-                            @endforeach --}}
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -70,6 +40,7 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'name', name: 'name'},
                 {data: 'stock', name: 'stock'}, 
+                {data: 'status', name: 'status'}, 
                 {
                     data: 'action', 
                     name: 'action', 
@@ -132,11 +103,7 @@
 
     // $('.update-status-obat').on('click', function (e) {
     //     e.preventDefault();
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
+
     //     var id = $(this).data("id");
     //     var url = "{{ route('supply.update', ":id") }}";
     //     url = url.replace(':id', id);
@@ -178,6 +145,64 @@
     //         }
     //     });
     // })
+
+    function toastEvent(title, message, position, type) {
+        if (type == 'error') {
+            iziToast.error({
+                title: title,
+                message: message,
+                position: position
+            });   
+        } else {
+            iziToast.success({
+                title: title,
+                message: message,
+                position: position
+            });
+        }
+    }
+
+    function reloadTable(selector, counter) {
+        // updateTotal()
+        setTimeout(function() {
+            $(selector).DataTable().ajax.reload();
+        }, 100);
+    }
+
+    function updateItem(id) {
+        var url = "{{ route('supplier.update', ":id") }}";
+        url = url.replace(':id', id);
+        
+        console.log(url);
+
+        // Swal.fire({
+        //     title: 'Apa anda Yakin?',
+        //     text: "Yakin ingin Mengubah Status Bahan Baku?",
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Ya!'
+        // }).then((result) => {
+        //     if (result.value) {
+        //         $.ajax({
+        //             url: url,
+        //             type: 'PUT',
+        //             data: {id: id, '_method':'PUT'},
+        //             success: function (response) {
+        //                 console.log('masuk success');
+        //                 console.log(response);
+        //                 toastEvent('Success!', response.message, 'topRight', 'success')
+        //                 reloadTable('#supply-table', 100);
+        //             },
+        //             error: function (data) {
+        //                 console.log('masuk error');
+        //                 toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
+        //             }
+        //         });
+        //     }
+        // });
+    }
 
     // function reloadPage(counter) {
     //     setTimeout(function () { 

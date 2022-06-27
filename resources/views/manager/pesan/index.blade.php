@@ -6,7 +6,11 @@
             <div class="card-header">
                 <h4>Daftar Pesanan {{$title == 'pesanan' ? 'Bahan Baku' : ucfirst($title)}}</h4>
                 <div class="card-header-action">
-                    <a href="{{ route('pesanan.create') }}" class="btn btn-success">Tambah {{$title == 'pesanan' ? 'Bahan Baku' : ucfirst($title)}}</a>
+                    <form action="{{ route('pesanan.store') }}" method="post">
+                        @csrf
+                        <input type="submit" class="btn btn-success" value="Tambah {{$title == 'pesanan' ? 'Bahan Baku' : ucfirst($title)}}">
+                    </form>
+                    {{-- <a href="{{ route('pesanan.store') }}" class="btn btn-success">Tambah {{$title == 'pesanan' ? 'Bahan Baku' : ucfirst($title)}}</a> --}}
                 </div>
             </div>
             <div class="card-body">
@@ -14,7 +18,7 @@
                     <table id="pesanan-table" class="table table-striped">
                         <thead>
                             <th>{{__('No')}}</th>
-                            <th>{{__('Total Item')}}</th>
+                            <th>{{__('List Item')}}</th>
                             <th>{{__('Total Harga')}}</th>
                             <th>{{__('Status')}}</th>
                             <th>{{__('Aksi')}}</th>
@@ -38,7 +42,7 @@
             "ajax": "{{ route('manager.getAllSupplyOrder') }}",
             "columns": [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'total_item', name: 'total_item'},
+                {data: 'nama_item', name: 'nama_item'},
                 {data: 'price_total', name: 'price_total'}, 
                 {data: 'status', name: 'status'}, 
                 {
@@ -54,110 +58,64 @@
         })
     });
 
-    // $('.hapus-obat').on('click', function (e) {
-    //     e.preventDefault();
+    function updateStatus(id) {
+        var url = "{{ route('manager.updateStatus', ":id") }}";
+        url = url.replace(':id', id);
+        
+        console.log(url);
 
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
+        Swal.fire({
+            title: 'Apa anda Yakin?',
+            text: "Yakin ingin Mengubah Status Order Bahan Baku?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {id: id, '_method':'PUT'},
+                    success: function (response) {
+                        console.log('masuk success');
+                        console.log(response);
+                        toastEvent('Success!', response.message, 'topRight', 'success')
+                        reloadTable('#pesanan-table', 100);
+                    },
+                    error: function (data) {
+                        console.log('masuk error');
+                        toastEvent('Error!', 'internal server error (500)', 'topRight', 'error')
+                    }
+                });
+                console.log('masuk swall');
+            }
+        });
+    }
 
-    //     var id = $(this).data("id");
-    //     // var url = $('.hapus').attr('href');
-    //     var url = "{{ route('supply.destroy', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
+    function toastEvent(title, message, position, type) {
+        if (type == 'error') {
+            iziToast.error({
+                title: title,
+                message: message,
+                position: position
+            });   
+        } else {
+            iziToast.success({
+                title: title,
+                message: message,
+                position: position
+            });
+        }
+    }
 
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin ingin menghapus Data Obat ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'DELETE',
-    //                 data: {id: id},
-    //                 success: function (response) {
-    //                     $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Dihapus!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2000);
-    //                 },
-    //                 error: function (data) {
-    //                     console.log(data);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Dihapus!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
-
-    // $('.update-status-obat').on('click', function (e) {
-    //     e.preventDefault();
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     var id = $(this).data("id");
-    //     var url = "{{ route('supply.update', ":id") }}";
-    //     url = url.replace(':id', id);
-    //     $object=$(this);
-
-    //     console.log(url, id);
-
-    //     Swal.fire({
-    //         title: 'Are you sure?',
-    //         text: "Yakin Ubah status Data Order ini!",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya!'
-    //     }).then((result) => {
-    //         if (result.value) {
-    //             $.ajax({
-    //                 url: url,
-    //                 type: 'PUT',
-    //                 data: {id: id, '_method':'PUT'},
-    //                 success: function (response) {
-    //                     // $($object).parents('tr').remove();
-    //                     Swal.fire({
-    //                         title: "Data Diupdate!",
-    //                         text: response.message,
-    //                         icon: 'success',
-    //                     });
-    //                     reloadPage(2500);
-    //                 },
-    //                 error: function (jqXHR, textStatus, errorThrown) {
-    //                     console.log(jqXHR, textStatus, errorThrown);
-    //                     Swal.fire({
-    //                         title: "Data Gagal Diupdate!",
-    //                         icon: 'error',
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     });
-    // })
-
-    // function reloadPage(counter) {
-    //     setTimeout(function () { 
-    //         location.reload();
-    //     }, counter)
-    // }
+    function reloadTable(selector, counter) {
+        // updateTotal()
+        setTimeout(function() {
+            $(selector).DataTable().ajax.reload();
+        }, 100);
+    }
 </script>
 @endpush
 @include('import.datatable')

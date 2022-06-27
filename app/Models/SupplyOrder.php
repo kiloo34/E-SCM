@@ -37,11 +37,10 @@ class SupplyOrder extends Model
      */
     protected $fillable = [
         'total',
-        'price',
         'status'
     ];
 
-    protected $with = ['order_supply_detail'];
+    protected $with = ['order_supply_detail', 'status_supply_order'];
 
     /**
      * Get all of the order_supply_detail for the SupplyOrder
@@ -51,5 +50,15 @@ class SupplyOrder extends Model
     public function order_supply_detail()
     {
         return $this->hasMany(SupplyOrderDetail::class);
+    }
+
+    /**
+     * Get the status_supply_order that owns the Supply
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status_supply_order()
+    {
+        return $this->belongsTo(StatusSupplyOrder::class);
     }
 }

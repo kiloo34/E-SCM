@@ -12,6 +12,7 @@ use App\Http\Controllers\Kasir\DashboardController as kasirDashboard;
 
 use App\Http\Controllers\Supplier\DashboardController as supplierDashboard;
 use App\Http\Controllers\Supplier\SupplyController as supplierSupply;
+use App\Http\Controllers\Supplier\PesanController as supplierPesanan;
 
 
 /*
@@ -48,10 +49,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ajax/manager/getMenu', [managerMenu::class, 'getMenu'])->name('manager.getMenu');
         // Pesan Bahan Baku
         Route::resource('pesanan', managerPesan::class);
-        Route::get('ajax/manager/getSupplyDetailOrder', [managerPesan::class, 'getSupplyDetailOrder'])->name('manager.getSupplyDetailOrder');
-        Route::get('ajax/manager/getAllSupply', [managerPesan::class, 'getAllSupply'])->name('manager.getAllSupply');
-        Route::get('ajax/manager/getAllSupplyOrder', [managerPesan::class, 'getAllSupplyOrder'])->name('manager.getAllSupplyOrder');
+        
         Route::get('ajax/manager/getPrice/{id}', [managerPesan::class, 'getPrice'])->name('manager.getPrice');
+        Route::get('ajax/manager/getAllSupply', [managerPesan::class, 'getAllSupply'])->name('manager.getAllSupply');
+        Route::get('ajax/manager/getSupplyOrder/{id}', [managerPesan::class, 'getSupplyOrder'])->name('manager.getSupplyOrder');
+        Route::get('ajax/manager/getAllSupplyOrder', [managerPesan::class, 'getAllSupplyOrder'])->name('manager.getAllSupplyOrder');
+        Route::get('ajax/manager/getSupplyDetailOrder/{supplyOrder}', [managerPesan::class, 'getSupplyDetailOrder'])->name('manager.getSupplyDetailOrder');
+        
+        Route::post('ajax/manager/storeDetailOrderSupply/{id}', [managerPesan::class, 'storeDetailOrderSupply'])->name('manager.storeDetailOrderSupply');
+        Route::post('ajax/OrderSupply/{supplyOrder}/supply/{supply}/plusItem', [managerPesan::class, 'plusDetailOrderSupplyItem'])->name('manager.plusDetailOrderSupplyItem');
+        Route::post('ajax/OrderSupply/{supplyOrder}/supply/{supply}/minusItem', [managerPesan::class, 'minusDetailOrderSupplyItem'])->name('manager.minusDetailOrderSupplyItem');
+        Route::post('ajax/OrderSupply/{supplyOrder}/supply/{supply}/deleteItem', [managerPesan::class, 'deleteDetailOrderSupplyItem'])->name('manager.deleteDetailOrderSupplyItem');
+
+        Route::put('ajax/manager/updateStatus/{id}', [managerPesan::class, 'updateStatus'])->name('manager.updateStatus');
     });
 
     Route::group(['middleware' => ['role:kasir']], function () {
@@ -66,5 +76,11 @@ Route::middleware(['auth'])->group(function () {
         // Supply
         Route::resource('supplier', supplierSupply::class);
         Route::get('ajax/supplier/getSupply', [supplierSupply::class, 'getSupply'])->name('supplier.getSupply');
+        Route::get('ajax/supplier/getStatusSupply', [supplierSupply::class, 'getStatusSupply'])->name('supplier.getStatusSupply');
+        // Pesanan List
+        Route::resource('supplier_pesanan', supplierPesanan::class);
+        Route::get('ajax/supplier/getSupplyOrder', [supplierPesanan::class, 'getSupplyOrder'])->name('supplier.getSupplyOrder');
+        Route::put('ajax/supplier/updateStatus/{id}', [supplierPesanan::class, 'updateStatus'])->name('supplier.updateStatus');
+        Route::delete('ajax/supplier/cancelOrder/{id}', [supplierPesanan::class, 'cancelOrder'])->name('supplier.cancelOrder');
     });
 });

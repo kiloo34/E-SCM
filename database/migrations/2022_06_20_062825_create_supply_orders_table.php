@@ -18,6 +18,8 @@ class CreateSupplyOrdersTable extends Migration
             $table->string('total')->default(0);
             $table->unsignedBigInteger('status');
             $table->foreign('status')->references('id')->on('status_supply_orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }
