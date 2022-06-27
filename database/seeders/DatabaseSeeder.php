@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             StatusMenuSeeder::class,
             MenuSeeder::class,
             StatusSupplyOrderSeeder::class,
+            StatusTransactionSeeder::class,
             StatusSupplySeeder::class,
             SupplyOrderSeeder::class,
             SupplyOrderDetailSeeder::class,

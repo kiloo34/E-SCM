@@ -1,6 +1,6 @@
 @extends('layouts.myview')
 @section('content')
-<div class="row">
+{{-- <div class="row">
     <div class="col-md-8 col-sm-12">
         <div class="card">
             <div class="card-header">
@@ -23,18 +23,22 @@
     <div class="col-md-4 col-lg-4 col-xl-4">
         <div class="card">
             <div class="card-header">
-                <h4>Detail Order</h4>
+                <h4>Detail Order </h4>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-between mt-3">
-                    <span>Nama</span> 
-                    <span class="mr-4">
+                    <span>Nama Menu</span> 
+                    <span>
                         <span>Harga</span><br>
                         <span>Qty</span>
                     </span>
                 </div>
-                <hr>
-                <div class="d-flex justify-content-between mt-3">
+                <hr> --}}
+                {{-- if --}}
+                {{-- @foreach ($collection as $item)
+                    
+                @endforeach --}}
+                {{-- {{-- <div class="d-flex justify-content-between mt-3">
                     <span>contracted Price</span> <span>$186.86</span>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
@@ -69,17 +73,21 @@
                 <hr />
                 <div class="d-flex justify-content-between mt-3">
                     <span>Insurance Responsibility </span> <span>$71.76</span>
-                </div>
-                <div class="d-flex justify-content-between mt-3">
-                    <span>Patient Balance </span> <span>$13.24</span>
-                </div>
+                </div> --}}
+                {{-- <div class="d-flex justify-content-between mt-3">
+                    <span>Nama Menu </span> 
+                    <span>
+                        <span>item</span><br>
+                        <span>harga</span>
+                    </span>
+                </div> 
                 <hr />
                 <div class="d-flex justify-content-between mt-3">
                     <span>Total </span> <span class="text-success">$85.00</span>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- <div class="col-md-4 col-sm-12">
         <div class="card">
             <div class="card-header">
@@ -109,30 +117,30 @@
 @endsection
 @push('scripts')
 <script>
-    $(document).ready(function() { 
-        $('#menu-table').DataTable({
-            "language": {
-                "emptyTable": "Menu Kosong"
-            },
-            "processing": true,
-            "serverSide": true,
-            "ajax": "{{ route('kasir.getMenu') }}",
-            "columns": [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'name', name: 'name'},
-                {data: 'stock', name: 'stock'},
-                {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false
-                },
-            ],
-        });
-        $('#menu-table').on('draw.dt', function() {
-            $('[data-toggle="tooltip"]').tooltip();
-        })
-    })
+    // $(document).ready(function() { 
+    //     $('#menu-table').DataTable({
+    //         "language": {
+    //             "emptyTable": "Menu Kosong"
+    //         },
+    //         "processing": true,
+    //         "serverSide": true,
+    //         "ajax": "{{ route('kasir.getMenu') }}",
+    //         "columns": [
+    //             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+    //             {data: 'name', name: 'name'},
+    //             {data: 'stock', name: 'stock'},
+    //             {
+    //                 data: 'action', 
+    //                 name: 'action', 
+    //                 orderable: false, 
+    //                 searchable: false
+    //             },
+    //         ],
+    //     });
+    //     $('#menu-table').on('draw.dt', function() {
+    //         $('[data-toggle="tooltip"]').tooltip();
+    //     })
+    // })
 </script>
 @endpush
-@include('import.datatable')
+{{-- @include('import.datatable') --}}

@@ -9,6 +9,7 @@ use App\Http\Controllers\Manager\MenuController as managerMenu;
 use App\Http\Controllers\Manager\PesanController as managerPesan;
 
 use App\Http\Controllers\Kasir\DashboardController as kasirDashboard;
+use App\Http\Controllers\Kasir\TransactionController as kasirTransaksi;
 
 use App\Http\Controllers\Supplier\DashboardController as supplierDashboard;
 use App\Http\Controllers\Supplier\SupplyController as supplierSupply;
@@ -82,7 +83,14 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['role:kasir']], function () {
         // Dashboard
         Route::get('kasir/dashboard', [kasirDashboard::class, 'index'])->name('kasir.dashboard');
-        Route::get('ajax/kasir/getMenu', [kasirDashboard::class, 'getMenu'])->name('kasir.getMenu');
+        // Transaksi
+        Route::resource('kasir_transaksi', kasirTransaksi::class);
+        Route::get('ajax/kasir/getMenu', [kasirTransaksi::class, 'getMenu'])->name('kasir.transaksi.getMenu');
+        Route::get('ajax/kasir/getDetailTransaksi/{transaksi}', [kasirTransaksi::class, 'getDetailTransaksi'])->name('kasir.transaksi.getDetailTransaksi');
+
+        Route::post('ajax/kasir/transaksi/{transaksi}/menu/{menu}/updateItem', [kasirTransaksi::class, 'updateItem'])->name('kasir.transaksi.updateItem');
+        Route::post('ajax/kasir/transaksi/{transaksi}/menu/{menu}/deleteItem', [kasirTransaksi::class, 'deleteItem'])->name('kasir.transaksi.deleteItem');
+        Route::post('ajax/kasir/transaksi/{transaksi}/menu/{menu}/addDetailTransaksi', [kasirTransaksi::class, 'addDetailTransaksi'])->name('kasir.transaksi.addDetailTransaksi');
     });
 
     Route::group(['middleware' => ['role:supplier']], function () {
