@@ -124,7 +124,7 @@
     //         },
     //         "processing": true,
     //         "serverSide": true,
-    //         "ajax": "{{ route('kasir.getMenu') }}",
+    //         "ajax": "",
     //         "columns": [
     //             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
     //             {data: 'name', name: 'name'},
